@@ -4,15 +4,14 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import control.CSVFileController;
+
 import control.action.DialogActions;
 import control.action.SupplierButtonActions;
 import net.miginfocom.swing.MigLayout;
 import view.ApplicationStyles;
 import view.Dialog;
 
-public final class AddSupplierPanel
-{
+public class AddSupplierPanel {
     private final JPanel addSupPanel;
 
     private final Dialog dialog;
@@ -20,16 +19,14 @@ public final class AddSupplierPanel
     private JTextField tfID, tfName;
 
 
-    public AddSupplierPanel(Dialog dialog)
-    {
+    public AddSupplierPanel(Dialog dialog) {
         this.dialog = dialog;
         this.addSupPanel = new JPanel(new MigLayout());
         createAddSupplierPanel();
     }
 
 
-    private final void createAddSupplierPanel()
-    {
+    private void createAddSupplierPanel() {
         final JLabel nameLbl = new JLabel("Name");
         nameLbl.setFont(ApplicationStyles.STANDARD_FONT);
         addSupPanel.add(nameLbl);
@@ -47,17 +44,17 @@ public final class AddSupplierPanel
         addSupPanel.add(tfID, "wrap");
 
         final JButton submit = new JButton(
-            new SupplierButtonActions.NewSupplierAction(
-                "Submit",
-                dialog,
-                this));
+                new SupplierButtonActions.NewSupplierAction(
+                        "Submit",
+                        dialog,
+                        this));
         submit.setFont(ApplicationStyles.STANDARD_FONT);
         submit.setFocusable(false);
         submit.setBackground(ApplicationStyles.BUTTON_COLOR);
         addSupPanel.add(submit);
 
         final JButton cancel =
-            new JButton(new DialogActions.CloseDialogAction(dialog, "Cancel"));
+                new JButton(new DialogActions.CloseDialogAction(dialog, "Cancel"));
         cancel.setFont(ApplicationStyles.STANDARD_FONT);
         cancel.setFocusable(false);
         cancel.setBackground(ApplicationStyles.BUTTON_COLOR);
@@ -65,20 +62,17 @@ public final class AddSupplierPanel
     }
 
 
-    public final String getSupplierID()
-    {
+    public String getSupplierID() {
         return tfID.getText().trim().toString();
     }
 
 
-    public final String getSupplierName()
-    {
+    public String getSupplierName() {
         return tfName.getText().trim().toString();
     }
 
 
-    public final JPanel getAddSupplierPanel()
-    {
+    public JPanel getAddSupplierPanel() {
         return addSupPanel;
     }
 }

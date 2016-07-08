@@ -1,12 +1,10 @@
 package control.validation;
 
-public final class ValidateString
-    implements Validator
-{
+public class ValidateString
+        implements Validator {
 
     @Override
-    public <T> boolean validate(T data)
-    {
+    public <T> boolean validate(T data) {
         if (data.toString().equals(""))
             return false;
         else if (data.toString().matches("[a-zA-Z\\s\\d-]+"))

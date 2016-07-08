@@ -4,61 +4,53 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
+
 import model.common.Product;
 
 public class ProductTableModel
-    extends AbstractTableModel
-{
+        extends AbstractTableModel {
     private List<Product> productList;
 
-    private final String[] columnNames = { "ID", "Description", "Inventory",
-        "Minimum Quantity", "Cost", "Order Quantity" };
+    private final String[] columnNames = {"ID", "Description", "Inventory",
+            "Minimum Quantity", "Cost", "Order Quantity"};
 
 
-    public ProductTableModel()
-    {
+    public ProductTableModel() {
         productList = new ArrayList<Product>();
     }
 
 
-    public ProductTableModel(ArrayList<Product> productList)
-    {
+    public ProductTableModel(ArrayList<Product> productList) {
         this.productList = productList;
     }
 
 
-    public void resetTable()
-    {
+    public void resetTable() {
         productList.clear();
         fireTableDataChanged();
     }
 
 
-    public void addRow(Product product)
-    {
+    public void addRow(Product product) {
         productList.add(product);
         fireTableRowsInserted(productList.size() - 1, productList.size() - 1);
     }
 
 
-    public Product getProduct(int row)
-    {
+    public Product getProduct(int row) {
         return productList.get(row);
     }
 
 
     @Override
-    public int getColumnCount()
-    {
+    public int getColumnCount() {
         return columnNames.length;
     }
 
 
     @Override
-    public String getColumnName(int column)
-    {
-        switch (column)
-        {
+    public String getColumnName(int column) {
+        switch (column) {
             case 0:
                 return "<html>ID<br></html>";
             case 1:
@@ -78,26 +70,22 @@ public class ProductTableModel
 
 
     @Override
-    public int getRowCount()
-    {
+    public int getRowCount() {
         return productList.size();
     }
 
 
     @Override
-    public boolean isCellEditable(int row, int column)
-    {
+    public boolean isCellEditable(int row, int column) {
         return true;
     }
 
 
     @Override
-    public Object getValueAt(int row, int column)
-    {
+    public Object getValueAt(int row, int column) {
         final Product product = productList.get(row);
 
-        switch (column)
-        {
+        switch (column) {
             case 0:
                 return product.getId();
             case 1:
@@ -117,17 +105,15 @@ public class ProductTableModel
 
 
     @Override
-    public void setValueAt(Object value, int row, int column)
-    {
+    public void setValueAt(Object value, int row, int column) {
         Product product = productList.get(row);
 
-        switch (column)
-        {
+        switch (column) {
             case 0:
-                product.setId((String)value);
+                product.setId((String) value);
                 break;
             case 1:
-                product.setProductDescription((String)value);
+                product.setProductDescription((String) value);
                 break;
             case 2:
                 product.setQtyOnHand(Integer.parseInt(value.toString()));

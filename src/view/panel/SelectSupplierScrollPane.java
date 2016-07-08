@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
 import control.action.SupplierButtonActions;
 import model.Model;
 import model.common.Supplier;
@@ -11,8 +12,7 @@ import net.miginfocom.swing.MigLayout;
 import view.ApplicationStyles;
 import view.Dialog;
 
-public final class SelectSupplierScrollPane
-{
+public class SelectSupplierScrollPane {
     private final Model model;
 
     private final Dialog dialog;
@@ -24,36 +24,32 @@ public final class SelectSupplierScrollPane
     private final JPanel selectSupplierPanel;
 
 
-    public SelectSupplierScrollPane(Dialog dialog, AddProductPanel addProdPanel)
-    {
+    public SelectSupplierScrollPane(Dialog dialog, AddProductPanel addProdPanel) {
         this.dialog = dialog;
         this.addProdPanel = addProdPanel;
         this.model = Model.getModelInstance();
         this.selectSupplierPanel = new JPanel(new MigLayout());
         this.selectSupplierScrollPane = new JScrollPane(
-            selectSupplierPanel,
-            JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-            JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+                selectSupplierPanel,
+                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         selectSupplierScrollPane.setViewportView(selectSupplierPanel);
         addSupplierNameButtons();
     }
 
 
-    public final JScrollPane getScrollPane()
-    {
+    public JScrollPane getScrollPane() {
         return selectSupplierScrollPane;
     }
 
 
-    private final void addSupplierNameButtons()
-    {
-        for (Supplier supplier : model.getSuppliers())
-        {
+    private void addSupplierNameButtons() {
+        for (Supplier supplier : model.getSuppliers()) {
             JButton button = new JButton(
-                new SupplierButtonActions.SetSupplierAction(
-                    supplier.getName(),
-                    dialog,
-                    addProdPanel));
+                    new SupplierButtonActions.SetSupplierAction(
+                            supplier.getName(),
+                            dialog,
+                            addProdPanel));
             button.setFont(ApplicationStyles.STANDARD_FONT);
             button.setBackground(ApplicationStyles.BUTTON_COLOR);
             button.setPreferredSize(new Dimension(230, 30));

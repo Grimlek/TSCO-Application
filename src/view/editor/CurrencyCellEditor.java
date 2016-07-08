@@ -2,20 +2,18 @@ package view.editor;
 
 import control.CSVFileController;
 import control.validation.ValidateDouble;
+
 import java.awt.Component;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.text.DecimalFormat;
-import javax.swing.CellEditor;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JFormattedTextField;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
+
 import model.ErrorMessageModel;
 import model.common.Product;
 import model.tablemodel.AddProductTableModel;
@@ -23,9 +21,8 @@ import model.tablemodel.ProductTableModel;
 import view.ApplicationStyles;
 import view.panel.ErrorMessagePane;
 
-public final class CurrencyCellEditor
-    extends DefaultCellEditor
-{
+public class CurrencyCellEditor
+        extends DefaultCellEditor {
     private final JFormattedTextField textField;
 
     private final AbstractTableModel tableModel;
@@ -34,9 +31,8 @@ public final class CurrencyCellEditor
 
 
     public CurrencyCellEditor(
-        JFormattedTextField textField,
-        AbstractTableModel tableModel)
-    {
+            JFormattedTextField textField,
+            AbstractTableModel tableModel) {
         super(textField);
         this.textField = textField;
         this.tableModel = tableModel;
@@ -46,22 +42,18 @@ public final class CurrencyCellEditor
 
     @Override
     public Component getTableCellEditorComponent(
-        JTable table,
-        Object value,
-        boolean isSelected,
-        int row,
-        int column)
-    {
-        BigDecimal decimalValue = new BigDecimal(value.toString());
+            JTable table,
+            Object value,
+            boolean isSelected,
+            int row,
+            int column) {
         final DecimalFormat formatter = new DecimalFormat("$##,##0.00");
         this.productRow = row;
 
         textField.setFont(ApplicationStyles.TABLE_FONT);
         textField.addMouseListener(new TextFieldMouseAdapter());
 
-        if (value != null)
-        {
-            decimalValue = decimalValue.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+        if (value != null) {
             formatter.setMinimumFractionDigits(2);
             formatter.setMinimumFractionDigits(2);
             textField.setText(formatter.format(value));
@@ -71,14 +63,12 @@ public final class CurrencyCellEditor
 
 
     @Override
-    public Object getCellEditorValue()
-    {
-        if (!textField.getText().isEmpty())
-        {
+    public Object getCellEditorValue() {
+        if (!textField.getText().isEmpty()) {
             if (textField.getText().toString().contains(",")
-                || textField.getText().toString().contains("$"))
+                    || textField.getText().toString().contains("$"))
                 return new BigDecimal(
-                    textField.getText().toString().replaceAll("[,$]", ""));
+                        textField.getText().toString().replaceAll("[,$]", ""));
 
             return new BigDecimal(textField.getText());
         }
@@ -87,38 +77,29 @@ public final class CurrencyCellEditor
 
 
     @Override
-    public boolean stopCellEditing()
-    {
+    public boolean stopCellEditing() {
         String value = textField.getText();
 
-        if (tableModel instanceof ProductTableModel)
-        {
+        if (tableModel instanceof ProductTableModel) {
             final ProductTableModel productTableModel =
-                (ProductTableModel)tableModel;
+                    (ProductTableModel) tableModel;
             final Product product = productTableModel.getProduct(productRow);
 
             if (value.contains(",") || value.contains("$"))
                 value = value.replaceAll("[,$]", "");
 
-            if (new ValidateDouble().validate(value))
-            {
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run()
-                    {
-                        CSVFileController.getControllerInstance().addProduct(
+            if (new ValidateDouble().validate(value)) {
+                SwingUtilities.invokeLater(() -> {
+                    CSVFileController.getControllerInstance().addProduct(
                             product.getSupplier().getName(),
                             product);
-                    }
                 });
                 return super.stopCellEditing();
             }
 
             displayErrorMessage();
             return false;
-        }
-        else if (tableModel instanceof AddProductTableModel)
-        {
+        } else if (tableModel instanceof AddProductTableModel) {
             if (value.contains(",") || value.contains("$"))
                 value = value.replaceAll("[,$]", "");
             if (new ValidateDouble().validate(value))
@@ -126,25 +107,21 @@ public final class CurrencyCellEditor
 
             displayErrorMessage();
             return false;
-        }
-        else
+        } else
             return false;
     }
 
 
-    private final void displayErrorMessage()
-    {
+    private void displayErrorMessage() {
         final ErrorMessageModel errorModel = new ErrorMessageModel();
 
         errorModel.loadProperties();
 
-        if (errorModel.isDisplayable("ProductDoubleDisplay"))
-        {
+        if (errorModel.isDisplayable("ProductDoubleDisplay")) {
             final ErrorMessagePane pane = new ErrorMessagePane(
-                textField.getParent(),
-                errorModel.getErrorMessage("ProductDouble"));
-            if (pane.isCheckBoxSelected())
-            {
+                    textField.getParent(),
+                    errorModel.getErrorMessage("ProductDouble"));
+            if (pane.isCheckBoxSelected()) {
                 errorModel.saveProperties("ProductDoubleDisplay", "false");
                 errorModel.storeProperties();
             }
@@ -152,23 +129,16 @@ public final class CurrencyCellEditor
     }
 
 
-    private final class TextFieldMouseAdapter
-        extends MouseAdapter
-    {
+    private class TextFieldMouseAdapter
+            extends MouseAdapter {
         @Override
-        public void mousePressed(MouseEvent evt)
-        {
+        public void mousePressed(MouseEvent evt) {
             if ((evt.getButton() == MouseEvent.BUTTON1)
-                && evt.getClickCount() == 2)
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run()
-                    {
-                        final int offset =
+                    && evt.getClickCount() == 2)
+                SwingUtilities.invokeLater(() -> {
+                    final int offset =
                             textField.viewToModel(evt.getPoint());
-                        textField.setCaretPosition(offset);
-                    }
+                    textField.setCaretPosition(offset);
                 });
         }
     }

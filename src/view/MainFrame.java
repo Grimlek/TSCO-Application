@@ -13,8 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
 import control.ApplicationMouseAdapters;
-import control.CSVFileController;
 import control.action.CloseAction;
 import control.action.DialogActions;
 import control.action.SearchAction;
@@ -24,8 +24,7 @@ import model.Model;
 import model.common.Supplier;
 import model.tablemodel.ProductTableModel;
 
-public class MainFrame
-{
+public class MainFrame {
     private final JFrame frame;
 
     private final JPanel mainPanel;
@@ -41,8 +40,7 @@ public class MainFrame
     private static MainFrame mainFrame;
 
 
-    private MainFrame()
-    {
+    private MainFrame() {
         this.frame = new JFrame();
         this.dialog = new Dialog();
         this.table = new Table(new ProductTableModel());
@@ -53,13 +51,12 @@ public class MainFrame
     }
 
 
-    private void createMainFrame()
-    {
+    private void createMainFrame() {
         table.setTableColumnWidth();
         table.addMouseListener(
-            new ApplicationMouseAdapters.TableMouseAdapter(
-                dialog,
-                table.getModel()));
+                new ApplicationMouseAdapters.TableMouseAdapter(
+                        dialog,
+                        table.getModel()));
 
         mainPanel.add(menuBar.getParent());
 
@@ -75,21 +72,20 @@ public class MainFrame
         xButton.setFocusable(false);
         xButton.setFont(ApplicationStyles.STANDARD_FONT);
         xButton.setBackground(new Color(158, 7, 7));
-        xButton.setForeground(Color.WHITE);
         mainPanel.add(xButton, "cell 0 0, gap 398px, wrap");
 
         final JScrollPane buttonScrollPane = new JScrollPane(
-            buttonPanel.getParent(),
-            JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-            JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+                buttonPanel.getParent(),
+                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         buttonScrollPane.setViewportView(buttonPanel.getParent());
-        buttonScrollPane.setPreferredSize(new Dimension(250, 990));
+        buttonScrollPane.setPreferredSize(new Dimension(325, 990));
         mainPanel.add(buttonScrollPane);
 
         final JScrollPane listScrollPane = new JScrollPane(
-            table,
-            JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-            JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+                table,
+                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         listScrollPane.setPreferredSize(new Dimension(850, 990));
         mainPanel.add(listScrollPane, "cell 0 1");
 
@@ -97,41 +93,26 @@ public class MainFrame
         frame.setUndecorated(true);
         frame.setPreferredSize(new Dimension(1100, 550));
         frame
-            .addMouseListener(new ApplicationMouseAdapters.FrameMouseAdapter());
+                .addMouseListener(new ApplicationMouseAdapters.FrameMouseAdapter());
         frame.addMouseMotionListener(
-            new ApplicationMouseAdapters.FrameMouseMotionListener(frame));
+                new ApplicationMouseAdapters.FrameMouseMotionListener(frame));
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
 
-    public JFrame getFrame()
-    {
+    public JFrame getFrame() {
         return frame;
     }
 
 
-    public JPanel getParent()
-    {
-        return mainPanel;
-    }
-
-
-    public MenuBar getMenuBar()
-    {
-        return menuBar;
-    }
-
-
-    public ButtonPanel getButtonPanel()
-    {
+    public ButtonPanel getButtonPanel() {
         return buttonPanel;
     }
 
 
-    public static MainFrame getMainFrameInstance()
-    {
+    public static MainFrame getMainFrameInstance() {
         if (mainFrame == null)
             mainFrame = new MainFrame();
 
@@ -139,60 +120,52 @@ public class MainFrame
     }
 
 
-    public class ButtonPanel
-    {
+    public class ButtonPanel {
         private final JPanel panel;
 
 
-        public ButtonPanel()
-        {
+        public ButtonPanel() {
             this.panel = new JPanel(new MigLayout());
             addButtons();
         }
 
 
-        public void addButtons()
-        {
+        public void addButtons() {
             final TreeSet<Supplier> supplierList =
-                Model.getModelInstance().getSuppliers();
+                    Model.getModelInstance().getSuppliers();
 
-            for (Supplier supplier : supplierList)
-            {
+            for (Supplier supplier : supplierList) {
                 final JButton button = new JButton(
-                    new SupplierButtonActions.ShowSupplierProductsAction(
-                        supplier.getName(),
-                        table));
+                        new SupplierButtonActions.ShowSupplierProductsAction(
+                                supplier.getName(),
+                                table));
                 button.setFocusable(false);
                 button.setFont(ApplicationStyles.STANDARD_FONT);
                 button.setBackground(ApplicationStyles.BUTTON_COLOR);
-                button.setPreferredSize(new Dimension(230, 30));
+                button.setPreferredSize(new Dimension(250, 30));
                 button.setHorizontalAlignment(SwingConstants.CENTER);
                 panel.add(button, "wrap");
             }
         }
 
 
-        public JPanel getParent()
-        {
+        public JPanel getParent() {
             return panel;
         }
     }
 
 
-    public class MenuBar
-    {
+    private class MenuBar {
         private final JMenuBar menuBar;
 
 
-        public MenuBar()
-        {
+        private MenuBar() {
             this.menuBar = new JMenuBar();
             createMenuBar();
         }
 
 
-        private void createMenuBar()
-        {
+        private void createMenuBar() {
 
             final JMenuItem close = new JMenuItem(new CloseAction("Close"));
             close.setPreferredSize(new Dimension(125, 25));
@@ -205,14 +178,14 @@ public class MainFrame
             menuBar.add(application);
 
             final JMenuItem newSupplier = new JMenuItem(
-                new DialogActions.AddSupplierPanelAction(dialog, "New"));
+                    new DialogActions.AddSupplierPanelAction(dialog, "New"));
             newSupplier.setPreferredSize(new Dimension(125, 25));
             newSupplier.setFont(ApplicationStyles.HEADER_FONT);
 
             final JMenuItem addProduct = new JMenuItem(
-                new DialogActions.AddProductPanelAction(
-                    dialog,
-                    "Add Products"));
+                    new DialogActions.AddProductPanelAction(
+                            dialog,
+                            "Add Products"));
             addProduct.setPreferredSize(new Dimension(125, 25));
             addProduct.setFont(ApplicationStyles.HEADER_FONT);
 
@@ -235,8 +208,7 @@ public class MainFrame
         }
 
 
-        public JMenuBar getParent()
-        {
+        private JMenuBar getParent() {
             return menuBar;
         }
     }

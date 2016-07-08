@@ -1,8 +1,8 @@
 package view.editor;
 
 import control.CSVFileController;
-import control.validation.ValidateDouble;
 import control.validation.ValidateInteger;
+
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -11,6 +11,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
+
 import model.ErrorMessageModel;
 import model.common.Product;
 import model.tablemodel.AddProductTableModel;
@@ -18,9 +19,8 @@ import model.tablemodel.ProductTableModel;
 import view.ApplicationStyles;
 import view.panel.ErrorMessagePane;
 
-public final class IntegerCellEditor
-    extends DefaultCellEditor
-{
+public class IntegerCellEditor
+        extends DefaultCellEditor {
     private final JTextField textField;
 
     private final AbstractTableModel tableModel;
@@ -29,9 +29,8 @@ public final class IntegerCellEditor
 
 
     public IntegerCellEditor(
-        JTextField textField,
-        AbstractTableModel tableModel)
-    {
+            JTextField textField,
+            AbstractTableModel tableModel) {
         super(textField);
         this.textField = textField;
         this.tableModel = tableModel;
@@ -41,26 +40,24 @@ public final class IntegerCellEditor
 
     @Override
     public Component getTableCellEditorComponent(
-        JTable table,
-        Object value,
-        boolean isSelected,
-        int row,
-        int column)
-    {
+            JTable table,
+            Object value,
+            boolean isSelected,
+            int row,
+            int column) {
         this.productRow = row;
 
         textField.setFont(ApplicationStyles.TABLE_FONT);
         textField.addMouseListener(new TextFieldMouseAdapter());
 
         if (value != null)
-        textField.setText(value.toString());
+            textField.setText(value.toString());
         return textField;
     }
 
 
     @Override
-    public Object getCellEditorValue()
-    {
+    public Object getCellEditorValue() {
         if (!textField.getText().isEmpty())
             return Integer.parseInt(textField.getText());
         else
@@ -69,59 +66,46 @@ public final class IntegerCellEditor
 
 
     @Override
-    public boolean stopCellEditing()
-    {
+    public boolean stopCellEditing() {
         final String value = textField.getText();
 
-        if (tableModel instanceof ProductTableModel)
-        {
+        if (tableModel instanceof ProductTableModel) {
             final ProductTableModel productTableModel =
-                (ProductTableModel)tableModel;
+                    (ProductTableModel) tableModel;
             final Product product = productTableModel.getProduct(productRow);
 
-            if (new ValidateInteger().validate(value))
-            {
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run()
-                    {
-                        CSVFileController.getControllerInstance().addProduct(
+            if (new ValidateInteger().validate(value)) {
+                SwingUtilities.invokeLater(() -> {
+                    CSVFileController.getControllerInstance().addProduct(
                             product.getSupplier().getName(),
                             product);
-                    }
                 });
                 return super.stopCellEditing();
             }
 
             displayErrorMessage();
             return false;
-        }
-        else if (tableModel instanceof AddProductTableModel)
-        {
+        } else if (tableModel instanceof AddProductTableModel) {
             if (new ValidateInteger().validate(value) || value.length() == 0)
                 return super.stopCellEditing();
 
             displayErrorMessage();
             return false;
-        }
-        else
+        } else
             return false;
     }
 
 
-    private final void displayErrorMessage()
-    {
+    private void displayErrorMessage() {
         final ErrorMessageModel errorModel = new ErrorMessageModel();
 
         errorModel.loadProperties();
 
-        if (errorModel.isDisplayable("ProductIntegerDisplay"))
-        {
+        if (errorModel.isDisplayable("ProductIntegerDisplay")) {
             final ErrorMessagePane pane = new ErrorMessagePane(
-                textField.getParent(),
-                errorModel.getErrorMessage("ProductInteger"));
-            if (pane.isCheckBoxSelected())
-            {
+                    textField.getParent(),
+                    errorModel.getErrorMessage("ProductInteger"));
+            if (pane.isCheckBoxSelected()) {
                 errorModel.saveProperties("ProductIntegerDisplay", "false");
                 errorModel.storeProperties();
             }
@@ -129,23 +113,16 @@ public final class IntegerCellEditor
     }
 
 
-    private final class TextFieldMouseAdapter
-        extends MouseAdapter
-    {
+    private class TextFieldMouseAdapter
+            extends MouseAdapter {
         @Override
-        public void mousePressed(MouseEvent evt)
-        {
+        public void mousePressed(MouseEvent evt) {
             if ((evt.getButton() == MouseEvent.BUTTON1)
-                && evt.getClickCount() == 2)
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run()
-                    {
-                        final int offset =
+                    && evt.getClickCount() == 2)
+                SwingUtilities.invokeLater(() -> {
+                    final int offset =
                             textField.viewToModel(evt.getPoint());
-                        textField.setCaretPosition(offset);
-                    }
+                    textField.setCaretPosition(offset);
                 });
         }
     }
