@@ -15,6 +15,7 @@ local.properties
 .classpath
 .settings/
 .loadpath
+.idea
 Thumbs.DB
 
 # External tool builders
