@@ -5,11 +5,11 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
 import net.miginfocom.swing.MigLayout;
 import view.ApplicationStyles;
 
-public final class ErrorMessagePane
-{
+public class ErrorMessagePane {
     private final JLabel message;
 
     private final JCheckBox checkBox;
@@ -17,8 +17,7 @@ public final class ErrorMessagePane
     private final JPanel panel;
 
 
-    public ErrorMessagePane(Container parent, String errorMessage)
-    {
+    public ErrorMessagePane(Container parent, String errorMessage) {
         panel = new JPanel(new MigLayout(""));
 
         message = new JLabel(errorMessage);
@@ -30,15 +29,14 @@ public final class ErrorMessagePane
         panel.add(checkBox);
 
         JOptionPane.showMessageDialog(
-            parent,
-            panel,
-            "Error",
-            JOptionPane.ERROR_MESSAGE);
+                parent,
+                panel,
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
     }
 
 
-    public final boolean isCheckBoxSelected()
-    {
+    public boolean isCheckBoxSelected() {
         return checkBox.isSelected();
     }
 }

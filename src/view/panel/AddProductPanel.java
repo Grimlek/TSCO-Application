@@ -1,9 +1,7 @@
 package view.panel;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
-import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -14,19 +12,16 @@ import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
-import control.CSVFileController;
+
 import control.action.AddProductAction;
 import control.action.DialogActions;
 import net.miginfocom.swing.MigLayout;
 import view.ApplicationStyles;
-import view.CurrencyCellRenderer;
 import view.Dialog;
 import view.Table;
-import model.Model;
 import model.tablemodel.AddProductTableModel;
 
-public final class AddProductPanel
-{
+public class AddProductPanel {
     private final AbstractTableModel tableModel;
 
     private final Dialog dialog;
@@ -38,8 +33,7 @@ public final class AddProductPanel
     private JTextField supplierTF;
 
 
-    public AddProductPanel(Dialog dialog)
-    {
+    public AddProductPanel(Dialog dialog) {
         this.dialog = dialog;
         this.tableModel = new AddProductTableModel();
         this.table = new Table(tableModel);
@@ -48,8 +42,7 @@ public final class AddProductPanel
     }
 
 
-    private final void createAddProductPanel()
-    {
+    private void createAddProductPanel() {
         final JLabel supplierLbl = new JLabel("Supplier");
         supplierLbl.setFont(ApplicationStyles.STANDARD_FONT);
         addProdPanel.add(supplierLbl, "flowx");
@@ -61,7 +54,7 @@ public final class AddProductPanel
         addProdPanel.add(supplierTF, "cell 0 0, gap 10px");
 
         final JButton supplierBut =
-            new JButton(new DialogActions.AddSelectSupplierPanelAction(this));
+                new JButton(new DialogActions.AddSelectSupplierPanelAction(this));
         supplierBut.setBackground(ApplicationStyles.BUTTON_COLOR);
         supplierBut.setPreferredSize(new Dimension(20, 22));
         supplierBut.setFocusable(false);
@@ -74,14 +67,14 @@ public final class AddProductPanel
         addProdPanel.add(scrollPane, "wrap");
 
         final JButton submit =
-            new JButton(new AddProductAction("Submit", table.getModel(), this));
+                new JButton(new AddProductAction("Submit", table.getModel(), this));
         submit.setFont(ApplicationStyles.STANDARD_FONT);
         submit.setBackground(ApplicationStyles.BUTTON_COLOR);
         submit.setFocusable(false);
         addProdPanel.add(submit, "cell 0 2, flowx, alignx left");
 
         final JButton cancel =
-            new JButton(new DialogActions.CloseDialogAction(dialog, "Cancel"));
+                new JButton(new DialogActions.CloseDialogAction(dialog, "Cancel"));
         cancel.setFont(ApplicationStyles.STANDARD_FONT);
         cancel.setBackground(ApplicationStyles.BUTTON_COLOR);
         cancel.setFocusable(false);
@@ -89,12 +82,10 @@ public final class AddProductPanel
     }
 
 
-    public final void setTableColumnWidth(TableModel tableModel)
-    {
+    public void setTableColumnWidth(TableModel tableModel) {
         final TableColumnModel columnModel = table.getColumnModel();
 
-        if (tableModel.getColumnCount() == 6)
-        {
+        if (tableModel.getColumnCount() == 6) {
             columnModel.getColumn(0).setPreferredWidth(200);
             columnModel.getColumn(1).setPreferredWidth(300);
             columnModel.getColumn(2).setPreferredWidth(80);
@@ -105,32 +96,27 @@ public final class AddProductPanel
     }
 
 
-    public final JDialog getDialog()
-    {
+    public JDialog getDialog() {
         return dialog.getDialog();
     }
 
 
-    public final JTable getTable()
-    {
+    public JTable getTable() {
         return table;
     }
 
 
-    public final void setSupplierTFText(String data)
-    {
+    public void setSupplierTFText(String data) {
         supplierTF.setText(data);
     }
 
 
-    public final String getSupplierTFText()
-    {
+    public String getSupplierTFText() {
         return supplierTF.getText().trim();
     }
 
 
-    public final JPanel getAddProductPanel()
-    {
+    public final JPanel getAddProductPanel() {
         return addProdPanel;
     }
 }

@@ -2,8 +2,7 @@ package model.common;
 
 import java.util.Date;
 
-public class Order
-{
+public class Order {
     private Product product;
 
     private Supplier supplier;
@@ -14,11 +13,10 @@ public class Order
 
 
     public Order(
-        Product product,
-        Supplier supplier,
-        double totalCost,
-        Date date)
-    {
+            Product product,
+            Supplier supplier,
+            double totalCost,
+            Date date) {
         this.product = product;
         this.supplier = supplier;
         this.totalCost = totalCost;
@@ -26,50 +24,42 @@ public class Order
     }
 
 
-    public Product getProduct()
-    {
+    public Product getProduct() {
         return product;
     }
 
 
-    public void setProduct(Product product)
-    {
+    public void setProduct(Product product) {
         this.product = product;
     }
 
 
-    public Supplier getSupplier()
-    {
+    public Supplier getSupplier() {
         return supplier;
     }
 
 
-    public void setSupplier(Supplier supplier)
-    {
+    public void setSupplier(Supplier supplier) {
         this.supplier = supplier;
     }
 
 
-    public Date getDate()
-    {
+    public Date getDate() {
         return date;
     }
 
 
-    public void setDate(Date date)
-    {
+    public void setDate(Date date) {
         this.date = date;
     }
 
 
-    public void setTotalCost(double totalCost)
-    {
+    public void setTotalCost(double totalCost) {
         this.totalCost = totalCost;
     }
 
 
-    public double getTotalCost()
-    {
+    public double getTotalCost() {
         return totalCost;
     }
 }

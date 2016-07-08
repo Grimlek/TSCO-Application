@@ -6,21 +6,20 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.table.TableModel;
+
 import model.common.Product;
 import model.tablemodel.ProductTableModel;
 import view.Dialog;
 import view.panel.KeywordPanel;
 
-public final class ApplicationMouseAdapters
-{
+public class ApplicationMouseAdapters {
     private static int posX;
 
     private static int posY;
 
 
-    public final static class TableMouseAdapter
-        extends MouseAdapter
-    {
+    public static class TableMouseAdapter
+            extends MouseAdapter {
 
         private final Dialog dialog;
 
@@ -31,71 +30,61 @@ public final class ApplicationMouseAdapters
         private Product product;
 
 
-        public TableMouseAdapter(Dialog dialog, TableModel tableModel)
-        {
+        public TableMouseAdapter(Dialog dialog, TableModel tableModel) {
             this.dialog = dialog;
-            this.tableModel = (ProductTableModel)tableModel;
+            this.tableModel = (ProductTableModel) tableModel;
         }
 
 
         @Override
-        public void mousePressed(MouseEvent evt)
-        {
-            if (evt.getButton() == MouseEvent.BUTTON3)
-            {
+        public void mousePressed(MouseEvent evt) {
+            if (evt.getButton() == MouseEvent.BUTTON3) {
                 product = tableModel.getProduct(
-                    ((JTable)evt.getSource()).rowAtPoint(evt.getPoint()));
+                        ((JTable) evt.getSource()).rowAtPoint(evt.getPoint()));
                 keywordPanel = new KeywordPanel(dialog, product);
 
-                if (product.isCategorized())
-                {
-                    for (int y = 0; y < product.getCategories().size(); y++)
-                    {
+                if (product.isCategorized()) {
+                    for (int y = 0; y < product.getCategories().size(); y++) {
                         keywordPanel.setCategoryTextFields(
-                            y,
-                            (String)new ArrayList<Object>(
-                                product.getCategories()).get(y));
+                                y,
+                                (String) new ArrayList<Object>(
+                                        product.getCategories()).get(y));
                     }
                 }
 
                 dialog.addContainer(keywordPanel.getKeywordPanel());
                 dialog.setLocationToMousePoint(
-                    evt.getXOnScreen(),
-                    evt.getYOnScreen());
+                        evt.getXOnScreen(),
+                        evt.getYOnScreen());
                 dialog.setVisibility(true);
             }
         }
     }
 
 
-    public final static class FrameMouseMotionListener
-        extends MouseAdapter
-    {
+    public static class FrameMouseMotionListener
+            extends MouseAdapter {
         private final JFrame frame;
 
 
-        public FrameMouseMotionListener(JFrame frame)
-        {
+        public FrameMouseMotionListener(JFrame frame) {
             this.frame = frame;
         }
 
 
         @Override
-        public void mouseDragged(MouseEvent evt)
-        {
+        public void mouseDragged(MouseEvent evt) {
             frame.setLocation(
-                evt.getXOnScreen() - posX,
-                evt.getYOnScreen() - posY);
+                    evt.getXOnScreen() - posX,
+                    evt.getYOnScreen() - posY);
         }
     }
 
 
-    public final static class FrameMouseAdapter
-        extends MouseAdapter
-    {
+    public static class FrameMouseAdapter
+            extends MouseAdapter {
         @Override
-        public void mousePressed(MouseEvent evt)
-        {
+        public void mousePressed(MouseEvent evt) {
             posX = evt.getX();
             posY = evt.getY();
         }
